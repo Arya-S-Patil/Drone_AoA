@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Drone Position Logger</title>
+</head>
+<body>
+  <h2>Set Drone Position</h2>
+  <label>X: <input type="number" id="x"></label><br>
+  <label>Y: <input type="number" id="y"></label><br>
+  <label>Z: <input type="number" id="z"></label><br><br>
+
+  <button onclick="send()">SEND</button>
+  <button onclick="stop()">STOP</button>
+
+  <script>
+    function send() {
+      fetch('/position', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          x: document.getElementById('x').value,
+          y: document.getElementById('y').value,
+          z: document.getElementById('z').value,
+          active: true
+        })
+      }).then(() => alert("Started logging!"));
+    }
+
+    function stop() {
+      fetch('/position', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ active: false })
+      }).then(() => alert("Stopped logging!"));
+    }
+  </script>
+</body>
+</html>
